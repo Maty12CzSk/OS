@@ -1,0 +1,21 @@
+# bochsrc
+
+# Nastavení pro grafiku a obrazovku
+display_device: vga
+vga_palette: vga
+
+# Cesta k diskovému obrazu
+ata0-master: type=disk, path="os_image.bin", status=inserted
+
+# Nastavení pro emulaci CPU
+cpu: count=1, ips=1000000
+memory: size=64
+
+# Nastavení pro připojení sériového portu
+serial0: disabled
+
+# Logování chyb
+log: bochsout.txt
+
+# Nastavení pro bootování
+boot: cdrom

@@ -1,14 +1,20 @@
-ENTRY(kernel_main)
+ENTRY(_start)
+
+MEMORY {
+    CODE (rx) : ORIGIN = 0x1000, LENGTH = 4M
+    DATA (rw) : ORIGIN = 0x200000, LENGTH = 4M
+}
 
 SECTIONS {
-    . = 0x1000;    /* Začátek kernelu po bootloaderu */
     .text : {
-        *(.text)   /* Zde umístíme kód */
-    }
+        *(.text)
+    } > CODE
+
     .data : {
-        *(.data)   /* Zde umístíme data */
-    }
+        *(.data)
+    } > DATA
+
     .bss : {
-        *(.bss)    /* Zde umístíme ne-inicializované proměnné */
-    }
+        *(.bss)
+    } > DATA
 }
