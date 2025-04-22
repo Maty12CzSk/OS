@@ -4,6 +4,8 @@
 // Definice šířky a výšky obrazovky
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 200
+// Funkce pro vykreslení tlačítka
+void draw_button(int x, int y, const char* label);
 
 // Deklarace framebufferu
 extern unsigned char framebuffer[SCREEN_WIDTH * SCREEN_HEIGHT];

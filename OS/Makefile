@@ -6,36 +6,51 @@ NASM = nasm
 CFLAGS = -ffreestanding -O2 -Wall -Wextra -m32
 LDFLAGS = -T linker.ld -nostdlib -m elf_i386
 
-# Cíl pro kernel binární soubor
+# Cíle
 TARGET = kernel.bin
 BOOTLOADER = boot.bin
 FINAL_IMAGE = os_image.bin
 
 # Zdrojové soubory
-OBJS = kernel.o graphics.o
+OBJS = kernel.o graphics.o input.o setup.o settings.o main.o
 
-# Cíl pro bootovací obraz
+# Výchozí cíl
+all: $(FINAL_IMAGE)
+
+# Výsledný binární obraz OS
 $(FINAL_IMAGE): $(BOOTLOADER) $(TARGET)
 	cat $(BOOTLOADER) $(TARGET) > $(FINAL_IMAGE)
 
-# Linkování a sestavení kernelu
+# Linkování kernelu
 $(TARGET): $(OBJS)
 	ld $(LDFLAGS) -o $(TARGET) $(OBJS)
 
-# Kompilace C souborů
+# Kompilace jednotlivých souborů
 kernel.o: kernel.c
 	$(CC) $(CFLAGS) -c kernel.c -o kernel.o
 
 graphics.o: graphics.c
 	$(CC) $(CFLAGS) -c graphics.c -o graphics.o
 
-# Kompilace NASM souborů (bootloader)
+input.o: input.c
+	$(CC) $(CFLAGS) -c input.c -o input.o
+
+setup.o: setup.c
+	$(CC) $(CFLAGS) -c setup.c -o setup.o
+
+settings.o: settings.c
+	$(CC) $(CFLAGS) -c settings.c -o settings.o
+
+main.o: main.c
+	$(CC) $(CFLAGS) -c main.c -o main.o
+
+# Kompilace NASM (bootloader)
 $(BOOTLOADER): boot.asm
 	$(NASM) -f bin boot.asm -o $(BOOTLOADER)
 
-# Čistící příkaz pro odstranění dočasných souborů
+# Čistící cíl
 clean:
-	rm -f *.o *.bin $(TARGET) $(BOOTLOADER) $(FINAL_IMAGE)
+	rm -f *.o *.bin *.img $(FINAL_IMAGE) $(TARGET) $(BOOTLOADER)
 
 # Spuštění v QEMU
 run: $(FINAL_IMAGE)
